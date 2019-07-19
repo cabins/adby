@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 
@@ -48,6 +49,17 @@ func (self App) PrintAsTable() {
 	table.Append([]string{self.AppName, self.PkgName, fmt.Sprintf("%s", Byte2Human(self.FileSize)), strings.Split(self.ApkUrl, "?")[0], self.VersionName})
 
 	table.Render()
+}
+
+func (self App) GetFileName() string {
+	urlValue, err := url.Parse(self.ApkUrl)
+	if err != nil {
+		fmt.Println(err)
+		return ""
+	}
+
+	destName := urlValue.Query().Get("fsname")
+	return destName
 }
 
 func (self App) PrintAsJson() {

@@ -13,7 +13,7 @@ import (
 	"github.com/vbauerster/mpb/v4/decor"
 )
 
-func DownloadFileWithProgress(uri string, destPath string) {
+func DownloadFileWithProgress(uri string, destPath string)  {
 	// Make dir if destpath does not exist and not be empty
 	if destPath != "" {
 		if _, err := os.Stat(destPath); os.IsNotExist(err) {
