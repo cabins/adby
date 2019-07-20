@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"adby/core"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -18,7 +17,6 @@ var cacheCmd = &cobra.Command{
 	Short: "清理软件包缓存",
 	Long:  `清理软件包缓存`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("cache called")
 		cacheFolder := core.GetCacheFolder()
 
 		// Delete all the apk files in cacheFolder

@@ -3,6 +3,7 @@ module adby
 go 1.12
 
 require (
+	github.com/PuerkitoBio/goquery v1.5.0
 	github.com/mattn/go-runewidth v0.0.4 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/olekukonko/tablewriter v0.0.1
