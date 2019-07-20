@@ -3,6 +3,7 @@ package core
 import (
 	"log"
 	"os/exec"
+	"path/filepath"
 )
 
 // InstallFromNet - Install From Network
@@ -25,7 +26,11 @@ func InstallFromNet(pkg string) {
 
 // InstallFromLocal - Install From Local
 func InstallFromLocal(filename string) {
-	cmd := exec.Command("adb", "install", "-d", "-r", filename)
+	cachedir := GetCacheFolder()
+
+	fileName := filepath.Join(cachedir, filename)
+
+	cmd := exec.Command("adb", "install", "-d", "-r", fileName)
 	cmd.Run()
 	_, err := cmd.CombinedOutput()
 	if err != nil {
