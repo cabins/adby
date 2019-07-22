@@ -18,7 +18,7 @@ func ListApps(arg string) []string {
 	var resList []string
 	for _, line := range strings.Split(string(res), "\n") {
 		if strings.HasPrefix(line, "package:") {
-			resList = append(resList, strings.Split(line, ":")[1])
+			resList = append(resList, strings.TrimSpace(strings.Split(line, ":")[1]))
 		}
 	}
 	return resList

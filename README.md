@@ -7,6 +7,7 @@
 
 - clean
     - cache 清理缓存的应用安装包
+    - pkg 清除应用的数据信息
 - download <包名>，下载应用
 - install <包名>，安装应用
     - -l，从本地进行安装

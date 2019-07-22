@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	"fmt"
+	"adby/core"
+	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -13,10 +14,24 @@ var updateCmd = &cobra.Command{
 	Short:   "更新应用",
 	Long:    `更新应用`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("update called")
+		reArgs := args
+		all, _ := cmd.Flags().GetBool("all")
+		if all {
+			// 升级全部应用
+			reArgs = core.ListApps("")
+		} else if len(args) == 0 {
+			log.Println("请指定应用名称，或使用--all来升级全部")
+			return
+		}
+
+		for _, pkg := range reArgs {
+			core.UpdateApp(pkg)
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(updateCmd)
+
+	updateCmd.Flags().BoolP("all", "a", false, "是否升级全部应用")
 }

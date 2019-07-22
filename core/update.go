@@ -20,7 +20,7 @@ func GetInstalledVersion(pkg string) string {
 		return ""
 	}
 
-	return string(verList[1])
+	return strings.TrimSpace(string(verList[1]))
 
 }
 
@@ -29,9 +29,36 @@ func GetRepoVersion(pkg string) string {
 }
 
 func NeedToUpdate(localVersion, repoVersion string) bool {
+	// 版本号对比，来判断是否需要升级
+	lVer := strings.Split(localVersion, ".")
+	rVer := strings.Split(repoVersion, ".")
+
+	length := len(lVer)
+	if len(rVer) < length {
+		length = len(rVer)
+	}
+
+	for i := 0; i < length; i++ {
+		if rVer[i] > lVer[i] {
+			return true
+		}
+	}
+
+	if len(rVer) > len(lVer) {
+		return true
+	}
+
 	return false
 }
 
-func TransVersion(version string) []string {
-	return strings.Split(version, ".")
+func UpdateApp(pkg string) {
+	localVersion := GetInstalledVersion(pkg)
+	repoVersion := GetRepoVersion(pkg)
+
+	if NeedToUpdate(localVersion, repoVersion) {
+		log.Printf("%s已安装版本%s，发现新版本%s，开始升级……\n", pkg, localVersion, repoVersion)
+		InstallFromNet(pkg)
+	} else {
+		log.Printf("%s最新版本为%s，已安装版本%s……\n", pkg, repoVersion, localVersion)
+	}
 }
