@@ -30,8 +30,6 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
-
-	rootCmd.Flags().BoolP("help", "h", false, "查看帮助信息")
 }
 
 // initConfig reads in config file and ENV variables if set.

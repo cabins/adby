@@ -22,7 +22,7 @@ func (self Version) PrintAsJson() {
 }
 
 var Ver Version = Version{
-	Version:     "1.0",
+	Version:     "1.5",
 	Authors:     []string{"KongLingCun"},
-	Description: "基本命令实现完成",
+	Description: "优化部分命令，添加更多命令",
 }

@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"adby/core"
+	"log"
+
 	"github.com/spf13/cobra"
 )
 
@@ -14,16 +17,28 @@ var setCmd = &cobra.Command{
 	},
 }
 
+var setwifiCmd = &cobra.Command{
+	Use:   "wifi",
+	Short: "开启/关闭Wi-Fi开关",
+	Long:  `开启/关闭Wi-Fi开关`,
+	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) != 1 {
+			log.Println("请指定操作：on/off")
+			return
+		}
+
+		if args[0] == "on" {
+			core.TurnOnWifi()
+			return
+		}
+
+		if args[0] == "off" {
+			core.TurnOffWifi()
+		}
+	},
+}
+
 func init() {
+	setCmd.AddCommand(setwifiCmd)
 	rootCmd.AddCommand(setCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// setCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// setCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
