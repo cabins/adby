@@ -13,5 +13,4 @@ func CleanPkg(pkg string) {
 	if err != nil {
 		log.Println("清除数据失败。请重试……")
 	}
-
 }
