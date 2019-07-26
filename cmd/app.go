@@ -28,7 +28,7 @@ var appcleanCmd = &cobra.Command{
 		}
 
 		for _, pkg := range args {
-			core.CleanPkg(pkg)
+			core.CleanApp(pkg)
 		}
 	},
 }
@@ -44,7 +44,7 @@ var appstartCmd = &cobra.Command{
 		}
 
 		for _, pkg := range args {
-			core.AppStart(pkg)
+			core.StartApp(pkg)
 		}
 	},
 }
@@ -60,7 +60,7 @@ var appstopCmd = &cobra.Command{
 		}
 
 		for _, pkg := range args {
-			core.AppStop(pkg)
+			core.StopApp(pkg)
 		}
 	},
 }
