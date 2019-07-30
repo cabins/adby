@@ -144,8 +144,8 @@ var timeCmd = &cobra.Command{
 
 var deviceInfoCmd = &cobra.Command{
 	Use:   "info",
-	Short: "Android时间操作",
-	Long:  `Android时间操作`,
+	Short: "获取设备信息",
+	Long:  `获取设备信息`,
 	Run: func(cmd *cobra.Command, args []string) {
 		table, _ := cmd.Flags().GetBool("table")
 		if table {
