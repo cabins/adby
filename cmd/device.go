@@ -4,6 +4,7 @@ import (
 	"adby/core"
 	"fmt"
 	"log"
+	"strconv"
 
 	"github.com/spf13/cobra"
 )
@@ -156,6 +157,39 @@ var deviceInfoCmd = &cobra.Command{
 	},
 }
 
+var screenCmd = &cobra.Command{
+	Use:   "screen",
+	Short: "屏幕相关操作",
+	Long:  "屏幕相关操作",
+	Run: func(cmd *cobra.Command, args []string) {
+		brightness, _ := cmd.Flags().GetInt("brightness")
+		autoBrightness, _ := cmd.Flags().GetInt("auto")
+		timeout, _ := cmd.Flags().GetInt("timeout")
+
+		if autoBrightness == 1 {
+			log.Println(core.ScreenBrightMode(1))
+			return
+		} else {
+			log.Println(core.ScreenBrightMode(0))
+		}
+
+		if brightness != -1 {
+			log.Println(core.ScreenBrightness(strconv.Itoa(brightness)))
+			return
+		} else {
+			log.Println(core.ScreenBrightness(""))
+		}
+
+		if timeout != -1 {
+			log.Println(core.ScreenOffTimeout(timeout))
+			return
+		} else {
+			log.Println(core.ScreenOffTimeout(-1))
+		}
+		core.GetScreenInfo().PrintAsTable()
+	},
+}
+
 func init() {
 	deviceCmd.AddCommand(wifiCmd)
 	deviceCmd.AddCommand(dataCmd)
@@ -172,6 +206,11 @@ func init() {
 
 	deviceInfoCmd.Flags().BoolP("table", "t", false, "是否以表格格式打印")
 	deviceCmd.AddCommand(deviceInfoCmd)
+
+	screenCmd.Flags().IntP("brightness", "b", -1, "设置屏幕亮度，默认为100")
+	screenCmd.Flags().IntP("auto", "a", -1, "设置屏幕自动亮度, 1自动，-1不自动")
+	screenCmd.Flags().IntP("timeout", "t", -1, "设置自动息屏时间，单位毫秒，默认为30秒")
+	deviceCmd.AddCommand(screenCmd)
 
 	rootCmd.AddCommand(deviceCmd)
 }

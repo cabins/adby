@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -151,4 +152,111 @@ func GetDeviceInfo() DeviceInfo {
 		Battery:  strings.TrimSpace(string(battery)),
 		Time:     tTime,
 	}
+}
+
+type screen struct {
+	Brightness       string `json:"brightness"`
+	BrightnessMode   string `json:"brightness_mode"`
+	ScreenSize       string `json:"screen_size"`
+	Density          string `jsong:"density"`
+	ScreenOffTimeout string `json"screen_off_timeout"`
+}
+
+func (s screen) PrintAsJSON() {
+	res, err := json.MarshalIndent(s, "", "  ")
+	if err != nil {
+		log.Println(err)
+		fmt.Println(s)
+		return
+	}
+	fmt.Println(string(res))
+}
+
+func (s screen) PrintAsTable() {
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"分辨率", "屏幕密度", "亮度", "是否自动亮度", "息屏时间(ms)"})
+	table.Append([]string{s.ScreenSize, s.Density, s.Brightness, s.BrightnessMode, s.ScreenOffTimeout})
+	table.Render()
+}
+
+func GetScreenInfo() screen {
+	brightness := ScreenBrightness("")
+	brightnessMode := ScreenBrightMode(-1)
+	screenSize := ScreenGetSize()
+	density := ScreenGetDensity()
+	screenOffTimeout := ScreenOffTimeout(-1)
+
+	return screen{
+		Brightness:       brightness,
+		BrightnessMode:   brightnessMode,
+		ScreenSize:       screenSize,
+		Density:          density,
+		ScreenOffTimeout: screenOffTimeout,
+	}
+}
+
+func ScreenBrightness(b string) string {
+	if b == "" {
+		brightness, err := exec.Command("adb", "shell", "settings", "get", "system", "screen_brightness").Output()
+		if err != nil {
+			log.Println(err)
+			brightness = []byte("Unknown")
+		}
+		return strings.TrimSpace(string(brightness))
+	}
+
+	_, err := strconv.Atoi(b)
+	if err != nil {
+		return err.Error()
+	}
+
+	exec.Command("adb", "shell", "settings", "put", "system", "screen_brightness", b).Run()
+	return ScreenBrightness("")
+}
+
+func ScreenBrightMode(b int) string {
+	if b != 1 && b != 0 {
+		brightnessMode, err := exec.Command("adb", "shell", "settings", "get", "system", "screen_brightness_mode").Output()
+		if err != nil {
+			log.Println(err)
+			brightnessMode = []byte("Unknown")
+		}
+		return strings.TrimSpace(string(brightnessMode))
+	}
+	exec.Command("adb", "shell", "settings", "put", "system", "screen_brightness_mode", strconv.Itoa(b)).Run()
+	return ScreenBrightMode(-1)
+}
+
+func ScreenGetSize() string {
+	screenSize, err := exec.Command("adb", "shell", "wm", "size").Output()
+	if err != nil {
+		log.Println(err)
+		screenSize = []byte("Unknown")
+	}
+
+	return strings.TrimSpace(strings.Split(string(screenSize), ":")[1])
+}
+
+func ScreenGetDensity() string {
+	screenSize, err := exec.Command("adb", "shell", "wm", "density").Output()
+	if err != nil {
+		log.Println(err)
+		screenSize = []byte("Unknown")
+	}
+
+	return strings.TrimSpace(strings.Split(string(screenSize), ":")[1])
+}
+
+func ScreenOffTimeout(t int) string {
+	if t == -1 {
+		screenOffTimeout, err := exec.Command("adb", "shell", "settings", "get", "system", "screen_off_timeout").Output()
+		if err != nil {
+			log.Println(err)
+			screenOffTimeout = []byte("Unknown")
+		}
+		return strings.TrimSpace(string(screenOffTimeout))
+	}
+
+	exec.Command("adb", "shell", "settings", "put", "system", "screen_off_timeout", strconv.Itoa(t)).Run()
+	return ScreenOffTimeout(-1)
 }
