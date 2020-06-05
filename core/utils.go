@@ -7,6 +7,7 @@ import (
 	homedir "github.com/mitchellh/go-homedir"
 )
 
+// GetCacheFolder - Get the cache folder path
 func GetCacheFolder() string {
 	homedir, err := homedir.Dir()
 
@@ -32,6 +33,7 @@ func mb2gb(i int) (int, string) {
 	return s, fmt.Sprintf("%dGB", s)
 }
 
+// Byte2Human - translate the byte num to human readable
 func Byte2Human(i int) string {
 	kb, kbs := byte2kb(i)
 	if kb > 1024 {
@@ -43,4 +45,11 @@ func Byte2Human(i int) string {
 		return mbs
 	}
 	return kbs
+}
+
+// EachPrint - Print each item in a list
+func EachPrint(list []string) {
+	for _, item := range list {
+		fmt.Println(item)
+	}
 }

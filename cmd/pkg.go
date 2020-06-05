@@ -124,16 +124,16 @@ var listCmd = &cobra.Command{
 		third, _ := cmd.Flags().GetBool("third")
 
 		if system {
-			fmt.Println(core.ListApps("-s"))
+			core.EachPrint(core.ListApps("-s"))
 			return
 		}
 
 		if third {
-			fmt.Println(core.ListApps("-3"))
+			core.EachPrint(core.ListApps("-3"))
 			return
 		}
 
-		fmt.Println(core.ListApps(""))
+		core.EachPrint(core.ListApps(""))
 	},
 }
 

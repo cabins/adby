@@ -3,13 +3,14 @@ package core
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/olekukonko/tablewriter"
 	"log"
 	"os"
 	"os/exec"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/olekukonko/tablewriter"
 )
 
 func deviceService(service string, operate string) {
@@ -17,38 +18,47 @@ func deviceService(service string, operate string) {
 	cmd.Run()
 }
 
+// WifiOn - Turn on the wifi
 func WifiOn() {
 	exec.Command("adb", "shell", "svc", "wifi", "enable").Run()
 }
 
+// WifiOff - Turn off the wifi
 func WifiOff() {
 	exec.Command("adb", "shell", "svc", "wifi", "disable").Run()
 }
 
+// WifiPrefer - Set the wifi as prefer choice
 func WifiPrefer() {
 	exec.Command("adb", "shell", "svc", "wifi", "prefer").Run()
 }
 
+// DataOn - Turn on the data connection
 func DataOn() {
 	exec.Command("adb", "shell", "svc", "data", "enable").Run()
 }
 
+// DataOff - Turn off the data connection
 func DataOff() {
 	exec.Command("adb", "shell", "svc", "data", "disable").Run()
 }
 
+// DataPrefer - Set the data connection as prefer choice
 func DataPrefer() {
 	exec.Command("adb", "shell", "svc", "data", "prefer").Run()
 }
 
+// StatusBarExpand - Expand the status bar
 func StatusBarExpand() {
 	exec.Command("adb", "shell", "cmd", "statusbar", "expand-notifications").Run()
 }
 
+// StatusBarCollapse - Collapse the status bar
 func StatusBarCollapse() {
 	exec.Command("adb", "shell", "cmd", "statusbar", "collapse").Run()
 }
 
+// StatusBarSettings - settings for status bar
 func StatusBarSettings() {
 	exec.Command("adb", "shell", "cmd", "statusbar", "expand-settings").Run()
 }
@@ -61,6 +71,7 @@ func StatusBarResume() {
 	exec.Command("adb", "shell", "settings", "put", "global", "policy_control", "null").Run()
 }
 
+// DeviceCurrentTime - get the current time
 func DeviceCurrentTime() string {
 	timeString, err := exec.Command("adb", "shell", "date '+%F %T'").Output()
 	if err != nil {
@@ -71,10 +82,12 @@ func DeviceCurrentTime() string {
 	return strings.TrimSpace(string(timeString))
 }
 
+// DeviceAutoTime - set the device's time to auto-setting
 func DeviceAutoTime() {
 	exec.Command("adb", "shell", "settings", "put", "global", "auto_time", "1").Run()
 }
 
+// DeviceTimeChange - Change the time of the device
 func DeviceTimeChange(year, month, week, day, hour, minute int) {
 	// 先获取到当前设备的时间
 	currentTimeString := DeviceCurrentTime()
