@@ -15,7 +15,9 @@ limitations under the License.
 */
 package main
 
-import "adby/cmd"
+import (
+	"adby/cmd"
+)
 
 func main() {
 	cmd.Execute()

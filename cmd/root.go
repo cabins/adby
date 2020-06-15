@@ -14,9 +14,10 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "adby",
-	Short: "用于Android平台的包管理器，类似于Fedora系统的YUM/DNF，或者Debian/Ubuntu系统的apt",
-	Long:  `用于Android平台的包管理器，类似于Fedora系统的YUM/DNF，或者Debian/Ubuntu系统的apt`,
+	Use:     "adby",
+	Short:   "用于Android平台的包管理器，类似于Fedora系统的YUM/DNF，或者Debian/Ubuntu系统的apt",
+	Long:    `用于Android平台的包管理器，类似于Fedora系统的YUM/DNF，或者Debian/Ubuntu系统的apt`,
+	Version: "1.6",
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
